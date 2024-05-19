@@ -4,7 +4,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>RollDice</title>
-        <link rel="stylesheet" href="./styles.css">
+        <link rel="stylesheet" href="styles.css">
     </head>
     <body>
         <div class="modalBackground">
@@ -19,9 +19,48 @@
                     <div class="diceSelection"></div>
                     <div id="selectButton" class="button" style="cursor: pointer">Вибрати</div>
                 </div>
+                <div class="modalContent">
+                    <div class="containerStatistic">
+                        <div class="searchContainer">
+                            <input type="text" id="dateInput" placeholder="Введіть дату кидка">
+                            <input type="text" id="faceOfDiceInput" placeholder="Введіть грані кубика">
+                            <input type="text" id="resultOfRoll" placeholder="Введіть результат">
+                            <button id="searchButton">Пошук</button>
+                        </div>
+                        <div id="throwTableContainer" class="table-container" style="max-height: 420px;">
+                            <table id="throwTable" class="modal-table"  style="border-collapse: separate">
+                                <thead>
+                                    <tr>
+                                        <th>Дата кидка</th>
+                                        <th>Грані к.</th>
+                                        <th>Резул.</th>
+                                        <th>Грані к.</th>
+                                        <th>Резул.</th>
+                                        <th>Грані к.</th>
+                                        <th>Резул.</th>
+                                        <th>Грані к.</th>
+                                        <th>Резул.</th>
+                                        <th>Грані к.</th>
+                                        <th>Резул.</th>
+                                        <th>Грані к.</th>
+                                        <th>Резул.</th>
+                                        <th>Грані к.</th>
+                                        <th>Резул.</th>
+                                        <th>Грані к.</th>
+                                        <th>Резул.</th>
+                                        <th>Грані к.</th>
+                                        <th>Резул.</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>      
+                        <div id="notFoundMessage" style="margin-top: 20px; color: red; font-weight: bold; text-align: center"></div>        
+                    </div>
+                    <div class="modalContent throwData"></div>
+                </div>
             </div>
         </div>
-
         <div class="container">
             <fieldset>
                 <legend style="text-align: center;">Вибрані вами кубики та їх грані</legend>
@@ -30,10 +69,10 @@
             <div class="menuB">
                 <div id="chooseButton" class="button" style="cursor: pointer">Обрати кубики для кидку</div>
                 <div id="generation" class="button" style="cursor: pointer">Кидок</div>
-                <div id="statistics" class="button" style="cursor: no-drop">Статистика кидків</div>
+                <div id="statistics" class="button" style="cursor: pointer">Статистика кидків</div>
             </div>
             <div class="result"></div> 
         </div>
-        <script src="./script.js"></script>
+        <script src="script.js"></script>
     </body>
 </html>

@@ -2,17 +2,10 @@ const express = require('express')
 const { Client } = require('pg')
 const dotenv = require('dotenv')
 
-const app = express()
-const port = 8000
-
 dotenv.config()
 
-app.use(express.static('public'))
-app.use(express.json());
-
-app.get('/', (req, res) => {
-    res.sendFile(__dirname + '/public/RollDice.html')
-})
+const app = express()
+const port = 8000
 
 const client = new Client({
     host: process.env.DB_HOST,
@@ -21,6 +14,31 @@ const client = new Client({
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
 })
+
+app.use(express.static('public'))
+app.use(express.json())
+
+app.get('/', (req, res) => {
+    res.sendFile(__dirname + '/public/RollDice.html')
+})
+
+app.post('/', (req, res) => {
+    const data = req.body
+    insertDiceRolls(data)
+    res.send('Dice rolls data received and processed')
+})
+
+app.get('/dice_rolls', async (req, res) => {
+    try {
+        const queryResult = await client.query('SELECT * FROM dice_rolls')
+        res.json(queryResult.rows)
+    } catch (error) {
+        console.error('Error fetching dice rolls data:', error.message)
+        res.status(500).json({ error: 'An error occurred while fetching dice rolls data' })
+    }
+})
+
+connectToDatabase()
 
 async function connectToDatabase() {
     try {
@@ -39,19 +57,19 @@ async function checkIfTableExists() {
                 SELECT FROM information_schema.tables 
                 WHERE table_name = 'dice_rolls'
             )
-        `);
-        const tableExists = result.rows[0].exists;
+        `)
+        const tableExists = result.rows[0].exists
         if (tableExists) {
-            console.log('Dice rolls table already exists');
+            console.log('Dice rolls table already exists')
             app.listen(port, () => {
                 console.log(`Server is running on http://Localhost:${port}`)
             })
         } else {
-            console.log('Dice rolls table does not exist, creating...');
-            await createDiceRollsTable();
+            console.log('Dice rolls table does not exist, creating...')
+            await createDiceRollsTable()
         }
     } catch (error) {
-        console.error('Error checking if dice rolls table exists:', error.message);
+        console.error('Error checking if dice rolls table exists:', error.message)
     }
 }
 
@@ -82,37 +100,25 @@ async function createDiceRollsTable() {
                 dice10 VARCHAR(255) DEFAULT NULL,
                 res10 VARCHAR(255) DEFAULT NULL
             )
-        `);
-        console.log('Dice rolls table created successfully');
+        `)
+        console.log('Dice rolls table created successfully')
+        checkIfTableExists()
     } catch (error) {
-        console.error('Error creating dice rolls table:', error.message);
+        console.error('Error creating dice rolls table:', error.message)
     }
 }
 
 async function insertDiceRolls(data) {
     try {
-        const { roll_date, ...diceResults } = data;
-        const columns = Object.keys(diceResults).join(', ');
-        const values = Object.values(diceResults);
+        const { roll_date, ...diceResults } = data
+        const columns = Object.keys(diceResults).join(', ')
+        const values = Object.values(diceResults)
         await client.query(`
             INSERT INTO dice_rolls (roll_date, ${columns})
             VALUES ($1, ${values.map((_, index) => `$${index + 2}`).join(', ')})
-        `, [roll_date, ...values]);
-        console.log('Dice rolls data inserted successfully');
-
-        const queryResult = await client.query('SELECT * FROM dice_rolls');
-        console.log('Data from the database:');
-        console.log(queryResult.rows);
+        `, [roll_date, ...values])
+        console.log('Dice rolls data inserted successfully')
     } catch (error) {
-        console.error('Error inserting dice rolls data:', error.message);
+        console.error('Error inserting dice rolls data:', error.message)
     }
 }
-
-app.post('/', (req, res) => {
-    const data = req.body;
-    insertDiceRolls(data)
-    console.log(data);
-    res.send('Dice rolls data received and processed');
-});
-
-connectToDatabase()

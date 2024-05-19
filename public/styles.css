@@ -104,3 +104,58 @@
     align-items: center;
     font-size: 40px;
 }
+#throwTable {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+    overflow-x: auto; 
+    overflow-y: auto;
+}
+#throwTableContainer {
+    overflow-y: auto; 
+    overflow-x: auto; 
+}
+#throwTable th, #throwTable td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden; 
+    text-overflow: ellipsis; 
+    width: 60px; 
+}
+#throwTable th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+#throwTable tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+#throwTable thead th:first-child {
+    width: 160px;
+    margin-top: 0;
+}
+.table-container {
+    max-height: 400px;
+    overflow-y: auto;
+    margin-top: 30px;
+    margin-bottom: 0px;
+    position: relative;
+}
+.modal-table {
+    width: 100%;
+}  
+.modal-table th,
+.modal-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+.modal-table th {
+    border-top: 1px solid #ddd;
+    position: sticky;
+    top: 0;
+    margin-top: 0;
+    background-color: #f1f1f1;
+    border: 1px solid black;
+    z-index: 1;
+}
