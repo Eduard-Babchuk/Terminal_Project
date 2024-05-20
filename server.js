@@ -15,31 +15,6 @@ const client = new Client({
     password: process.env.DB_PASSWORD,
 })
 
-app.use(express.static('public'))
-app.use(express.json())
-
-app.get('/', (req, res) => {
-    res.sendFile(__dirname + '/public/RollDice.html')
-})
-
-app.post('/', (req, res) => {
-    const data = req.body
-    insertDiceRolls(data)
-    res.send('Dice rolls data received and processed')
-})
-
-app.get('/dice_rolls', async (req, res) => {
-    try {
-        const queryResult = await client.query('SELECT * FROM dice_rolls')
-        res.json(queryResult.rows)
-    } catch (error) {
-        console.error('Error fetching dice rolls data:', error.message)
-        res.status(500).json({ error: 'An error occurred while fetching dice rolls data' })
-    }
-})
-
-connectToDatabase()
-
 async function connectToDatabase() {
     try {
         await client.connect()
@@ -122,3 +97,28 @@ async function insertDiceRolls(data) {
         console.error('Error inserting dice rolls data:', error.message)
     }
 }
+
+app.use(express.static('public'))
+app.use(express.json())
+
+app.get('/', (req, res) => {
+    res.sendFile(__dirname + '/public/RollDice.html')
+})
+
+app.post('/', (req, res) => {
+    const data = req.body
+    insertDiceRolls(data)
+    res.send('Dice rolls data received and processed')
+})
+
+app.get('/dice_rolls', async (req, res) => {
+    try {
+        const queryResult = await client.query('SELECT * FROM dice_rolls')
+        res.json(queryResult.rows)
+    } catch (error) {
+        console.error('Error fetching dice rolls data:', error.message)
+        res.status(500).json({ error: 'An error occurred while fetching dice rolls data' })
+    }
+})
+
+connectToDatabase()
