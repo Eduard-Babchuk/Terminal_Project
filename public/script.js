@@ -158,7 +158,7 @@ async function displayDiceRollsInModal() {
                 row.appendChild(diceCell)
                 row.appendChild(resultCell)
             }
-            tableBody.appendChild(row)
+            tableBody.insertBefore(row, tableBody.firstChild)
         })
     } catch (error) {
         console.error('Error displaying dice rolls data:', error.message)
